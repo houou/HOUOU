@@ -15,11 +15,21 @@ class openpneInstallTask extends sfDoctrineBaseTask
     $this->namespace        = 'openpne';
     $this->name             = 'install';
 
+    $this->addArguments(array(
+      new sfCommandArgument('dbms', sfCommandArgument::OPTIONAL, 'The database type'),
+      new sfCommandArgument('dbname', sfCommandArgument::OPTIONAL, 'The database name'),
+      new sfCommandArgument('hostname', sfCommandArgument::OPTIONAL, 'The database hostname'),
+      new sfCommandArgument('username', sfCommandArgument::OPTIONAL, 'The database username'),
+      new sfCommandArgument('password', sfCommandArgument::OPTIONAL, 'The database password'),
+    ));
+
     $this->addOptions(array(
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', null),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'prod'),
       new sfCommandOption('redo', null, sfCommandOption::PARAMETER_NONE, 'Executes a reinstall'),
       new sfCommandOption('non-recreate-db', null, sfCommandOption::PARAMETER_NONE, 'Non recreate DB'),
+      new sfCommandOption('port', null, sfCommandOption::PARAMETER_REQUIRED, 'The database port'),
+      new sfCommandOption('sock', null, sfCommandOption::PARAMETER_REQUIRED, 'The database socket'),
     ));
 
     $this->briefDescription = 'Install OpenPNE';
@@ -33,15 +43,6 @@ EOF;
 
   protected function execute($arguments = array(), $options = array())
   {
-    $dbms = '';
-    $username = '';
-    $password = '';
-    $hostname = '';
-    $port = '';
-    $dbname = '';
-    $sock = '';
-    $maskedPassword = '******';
-
     if ($options['redo'])
     {
       try
@@ -58,47 +59,40 @@ EOF;
 
     if (!$options['redo'])
     {
-      $validator = new sfValidatorCallback(array('required' => true, 'callback' => array($this, 'validateDBMS')));
-      $dbms = $this->askAndValidate(array('Choose DBMS:', '- mysql', '- pgsql (unsupported)', '- sqlite (unsupported)'), $validator, array('style' => 'QUESTION_LARGE'));
-      if (!$dbms)
+      $configTask = new openpneConfigureDatabaseTask($this->dispatcher, $this->formatter);
+
+      $ret = $configTask->run(array(
+        'dbms' => $arguments['dbms'],
+        'dbname' => $arguments['dbname'],
+        'hostname' => $arguments['hostname'],
+        'username' => $arguments['username'],
+        'password' => $arguments['password'],
+      ),array(
+        'app' => $options['application'],
+        'env' => $options['env'],
+        'port' => $options['port'],
+        'sock' => $options['sock'],
+      ));
+
+      if (0 !== $ret)
       {
-        $this->logSection('installer', 'task aborted');
+        $this->logSection('installer', 'install aborted', null, 'ERROR');
 
         return 1;
       }
 
-      if ($dbms !== 'sqlite')
-      {
-        $username = $this->askAndValidate(array('Type database username'), new opValidatorString(), array('style' => 'QUESTION_LARGE'));
-        $password = $this->askAndValidate(array('Type database password (optional)'), new opValidatorString(array('required' => false)), array('style' => 'QUESTION_LARGE'));
-        $hostname = $this->askAndValidate(array('Type database hostname'), new opValidatorString(), array('style' => 'QUESTION_LARGE'));
-        $port = $this->askAndValidate(array('Type database port number (optional)'), new sfValidatorInteger(array('required' => false)), array('style' => 'QUESTION_LARGE'));
-      }
+      $dbconfig = $configTask->getConfig();
 
-      $dbname = $this->askAndValidate(array('Type database name'), new opValidatorString(), array('style' => 'QUESTION_LARGE'));
-      if ($dbms == 'sqlite')
-      {
-        $dbname = realpath(dirname($dbname)).DIRECTORY_SEPARATOR.basename($dbname);
-      }
-
-      if ($dbms == 'mysql' && ($hostname == 'localhost' || $hostname == '127.0.0.1'))
-      {
-        $sock = $this->askAndValidate(array('Type database socket path (optional)'), new opValidatorString(array('required' => false)), array('style' => 'QUESTION_LARGE'));
-      }
-
-      if (!$password)
-      {
-        $maskedPassword = '';
-      }
+      $maskedPassword = $dbconfig['password'] ? '******' : '';
 
       $list = array(
-        'The DBMS                 : '.$dbms,
-        'The Database Username    : '.$username,
+        'The DBMS                 : '.$dbconfig['dbms'],
+        'The Database Username    : '.$dbconfig['username'],
         'The Database Password    : '.$maskedPassword,
-        'The Database Hostname    : '.$hostname,
-        'The Database Port Number : '.$port,
-        'The Database Name        : '.$dbname,
-        'The Database Socket      : '.$sock,
+        'The Database Hostname    : '.$dbconfig['hostname'],
+        'The Database Port Number : '.$dbconfig['port'],
+        'The Database Name        : '.$dbconfig['dbname'],
+        'The Database Socket      : '.$dbconfig['sock'],
       );
     }
 
@@ -111,11 +105,11 @@ EOF;
       return 1;
     }
 
-    $this->doInstall($dbms, $username, $password, $hostname, $port, $dbname, $sock, $options);
+    $this->doInstall($options);
 
-    if ($dbms === 'sqlite')
+    if (!$redo && $dbconfig['dbms'] === 'sqlite')
     {
-      $this->getFilesystem()->chmod($dbname, 0666);
+      $this->getFilesystem()->chmod($dbconfig['dbname'], 0666);
     }
 
     $this->publishAssets();
@@ -126,7 +120,7 @@ EOF;
     $this->logSection('installer', 'installation is completed!');
   }
 
-  protected function doInstall($dbms, $username, $password, $hostname, $port, $dbname, $sock, $options)
+  protected function doInstall($options)
   {
     if ($options['redo'])
     {
@@ -139,86 +133,7 @@ EOF;
     $this->installPlugins();
     @$this->fixPerms();
     @$this->clearCache();
-    if (!$options['redo'])
-    {
-      $this->configureDatabase($dbms, $username, $password, $hostname, $port, $dbname, $sock, $options);
-    }
     $this->buildDb($options);
-  }
-
-  protected function createDSN($dbms, $hostname, $port, $dbname, $sock)
-  {
-    $result = $dbms.':';
-
-    $data = array();
-
-    if ($dbname)
-    {
-      if ($dbms === 'sqlite')
-      {
-        $data[] = $dbname;
-      }
-      else
-      {
-        $data[] = 'dbname='.$dbname;
-      }
-    }
-
-    if ($hostname)
-    {
-      $data[] = 'host='.$hostname;
-    }
-
-    if ($port)
-    {
-      $data[] = 'port='.$port;
-    }
-
-    if ($sock)
-    {
-      $data[] = 'unix_socket='.$sock;
-    }
-
-    $result .= implode(';', $data);
-    return $result;
-  }
-
-  protected function configureDatabase($dbms, $username, $password, $hostname, $port, $dbname, $sock, $options)
-  {
-    $dsn = $this->createDSN($dbms, $hostname, $port, $dbname, $sock);
-
-    $file = sfConfig::get('sf_config_dir').'/databases.yml';
-    $config = array();
-
-    if (file_exists($file))
-    {
-      $config = sfYaml::load($file);
-    }
-
-    $env = 'all';
-    if ('prod' !== $options['env'])
-    {
-      $env = $options['env'];
-    }
-
-    $config[$env]['doctrine'] = array(
-      'class' => 'sfDoctrineDatabase',
-      'param' => array(
-        'dsn'        => $dsn,
-        'username'   => $username,
-        'encoding'   => 'utf8',
-        'attributes' => array(
-           Doctrine::ATTR_USE_DQL_CALLBACKS => true,
-        ),
-      ),
-    );
-
-    if ($password)
-    {
-      $config[$env]['doctrine']['param']['password'] = $password;
-    }
-
-    file_put_contents($file, sfYaml::dump($config, 4));
   }
 
   protected function clearCache()
@@ -381,35 +296,5 @@ EOF;
   {
     $permissions = new openpnePermissionTask($this->dispatcher, $this->formatter);
     $permissions->run();
-  }
-
-  public function validateDBMS($validator, $value, $arguments = array())
-  {
-    $list = array('mysql', 'pgsql', 'sqlite');
-    if (!in_array($value, $list))
-    {
-      throw new sfValidatorError($validator, 'You must specify "mysql", "pgsql" or "sqlite"');
-    }
-
-    if ('mysql' !== $value)
-    {
-      if ($this->askConfirmation(array(
-        '===================',
-        ' WARNING',
-        '===================',
-        $value.' is UNSUPPORTED by this version of OpenPNE!',
-        '',
-        'DO NOT use this DBMS, unless you are expert at this DBMS and you can cope some troubles.',
-        'If you want to give us some feedback about this DBMS, please visit: http://redmine.openpne.jp/',
-        '',
-        'Do you give up using this DBMS? (Y/n)',
-        ), 'ERROR_LARGE', true)
-      )
-      {
-        return false;
-      }
-    }
-
-    return $value;
   }
 }
