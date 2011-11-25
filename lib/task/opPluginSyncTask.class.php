@@ -119,14 +119,14 @@ EOF;
       }
       else
       {
-        $str = "Failed to download plugin list.";
+        $str = "Failed to download plugins list.";
         $this->logBlock($str, 'ERROR');
       }
     }
     catch (Zend_Http_Client_Adapter_Exception $e)
     {
-      $str = "Failed to download plugins list.";
-      $this->logBlock($str, 'ERROR');
+      $str = "No Internet Connection.";
+      $this->logBlock($str, 'COMMENT');
     }
 
     return $list;
