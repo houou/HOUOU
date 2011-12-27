@@ -51,7 +51,9 @@ var openpne = '.json_encode($json, defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PR
       <?php endif ?>
     </div>
   </div>
+      <?php if (opToolkit::isSecurePage()): ?>
   <div class="span2 center"><?php echo link_to(op_image_tag('HomeIcon.png', array('height' => '48')), '@homepage') ?></div>
+      <?php endif; ?>
 </div>
 <?php echo $sf_content ?>
 </body>
