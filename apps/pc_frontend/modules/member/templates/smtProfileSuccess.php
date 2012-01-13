@@ -18,9 +18,7 @@ $(function(){
 <?php ob_start() ?>
 <div class="alert-message block-message info">
 <p><?php echo __('Other members look your page like this.') ?></p>
-<p><?php echo __('If you teach your page to other members, please use following URL.') ?><br />
-<?php echo url_for('@member_profile?id='.$member->getId(), true) ?></p>
-<p><?php echo __('If you edit this page, please visit %1%.', array('%1%' => link_to(__('Edit profile'), '@member_editProfile'))) ?></p>
+<p><?php echo link_to(__('Edit profile'), '@member_editProfile') ?></p>
 </div>
 <?php $content = ob_get_clean() ?>
 <?php op_include_parts('descriptionBox', 'informationAboutThisIsYourProfilePage', array('body' => $content)) ?>
@@ -95,9 +93,9 @@ foreach ($member->getProfiles(true) as $profile)
 </div>
 <hr class="toumei" />
 <div class="row">
-  <div class="span12">
+  <div class="span8" style="float: center;">
     <hr class="toumei" />
-    <?php echo op_image_tag_sf_image($member->getImageFileName(), array('size' => '320x320')) ?>
+    <?php echo op_image_tag_sf_image($member->getImageFileName(), array('size' => '180x180')) ?>
   </div>
 </div>
 <hr class="toumei" />
