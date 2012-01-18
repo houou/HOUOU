@@ -53,7 +53,6 @@ var openpne = {
 </div>
 
 <hr class="toumei">
-<?php include_partial('default/smtMenu') ?>
 <?php if ($sf_user->hasFlash('error')): ?>
 <div id="global-error" class="row">
   <div class="alert-message block-message error">

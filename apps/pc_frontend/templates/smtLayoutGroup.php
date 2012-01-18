@@ -37,12 +37,11 @@ var openpne = {
     <div class="row"><span class="face-name"><?php echo $community->getName() ?></span></div>
     <hr class="toumei">
   </div>
-  <div class="span2 center"><a href="#menu" id="menubutton"><?php echo op_image_tag('HomeIcon.png', array('height' => '48')) ?></a></div>
+  <div class="span2 center"><?php echo link_to(op_image_tag('HomeIcon.png', array('height' => '48')), '@homepage'); ?></div>
   <?php endif ?>
 </div>
 
 <hr class="toumei">
-<?php include_partial('default/smtMenu') ?>
 
 <?php if ($sf_user->hasFlash('error')): ?>
 <div id="global-error" class="row">

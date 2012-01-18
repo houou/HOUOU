@@ -40,11 +40,10 @@ var openpne = {
       <?php endif ?>
     </div>
   </div>
-  <div class="span2 center"><a href="#menu" id="menubutton"><?php echo op_image_tag('HomeIcon.png', array('height' => '48')) ?></a></div>
+  <div class="span2 center"><?php echo link_to(op_image_tag('HomeIcon.png', array('height' => '48')), '@homepage'); ?></div>
 </div>
 
 <hr class="toumei">
-<?php include_partial('default/smtMenu') ?>
 <?php if ($sf_user->hasFlash('error')): ?>
 <div id="global-error" class="row">
   <div class="alert-message block-message error">
