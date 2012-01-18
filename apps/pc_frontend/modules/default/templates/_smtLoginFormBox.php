@@ -50,7 +50,7 @@
 
 <div class="row">
 <div class="span12">
-<input type="submit" name="submit" value="<?php echo __('Login'); ?>" class="btn primary" />
+<input type="submit" name="submit" value="<?php echo __('Login'); ?>" class="btn primary span12" />
 <?php echo $form->renderHiddenFields(); ?>
 </form>
 </div>
