@@ -7,7 +7,6 @@
       <hr class="toumei">
     </div>
     <div class="span1">
-      <img class="toggle1_close" src="./UPARROW.png">
       <?php echo op_image_tag('UPARROW', array('class' => 'toggle1_close')) ?>
     </div>
   </div>
