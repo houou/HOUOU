@@ -36,10 +36,26 @@ class memberComponents extends opMemberComponents
 
   public function executeSmtMemberFriendListBox($request)
   {
+    if ($request->hasParameter('id'))
+    {
+      $this->member = Doctrine::getTable('Member')->find($request->getParameter('id'));
+    }
+    else
+    {
+      $this->member = $this->getUser()->getMember();
+    }
   }
 
   public function executeSmtMemberJoinCommunityListBox($request)
   {
+    if ($request->hasParameter('id'))
+    {
+      $this->member = Doctrine::getTable('Member')->find($request->getParameter('id'));
+    }
+    else
+    {
+      $this->member = $this->getUser()->getMember();
+    }
   }
 
 }

@@ -7,8 +7,10 @@
 </script>
 <script type="text/javascript">
 $(function(){
-  $.getJSON( '<?php echo app_url_for('api', 'member/search.json', array('friend' => 1, 'targetid' => $member->getId())); ?>&apiKey=' + openpne.apiKey, function(json) {
+  $.getJSON( '<?php echo app_url_for('api', 'member/search.json', array()) ?>?friend=1&targetid=<?php echo $member->getId(); ?>&apiKey=' + openpne.apiKey, function(json) {
     $('#friendListTemplate').tmpl(json.data).appendTo('#memberFriendList');
+    $('#memberFriendList').show();
+    $('#memberFriendListLoading').hide();
   });
 });
 </script>
@@ -18,6 +20,9 @@ $(function(){
   <div class="gadget_header span12"><?php echo __('%friend% List', array('%friend%' => $op_term['friend'])) ?></div>
 </div>
 <hr class="toumei" />
-<div class="row" id="memberFriendList">
-
+<div class="row" id="memberFriendList" style="margin-left: 0;">
 </div> 
+<div class="row" id="memberFriendListLoading" style="margin-left: 0; text-align: center;">
+<?php echo op_image_tag('ajax-loader.gif', array()) ?>
+</div>
+
