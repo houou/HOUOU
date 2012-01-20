@@ -10,7 +10,7 @@
 }
 
 * {
-  word-break: break-all
+  word-break: break-all;
 }
 
 .postface { height: 52px; background: #eeeeee; padding: 4px 0px 0px 0px; }
