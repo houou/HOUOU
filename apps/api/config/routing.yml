@@ -72,4 +72,8 @@ member_community:
 member_search:
   url: /member/search.json
   param: { module: member, action: search, sf_format: json }
+
+member_communities:
+  url: /member/communities.json
+  param: { module: member, action: communities, sf_format: json }
   requirements: { sf_method: [get] }
