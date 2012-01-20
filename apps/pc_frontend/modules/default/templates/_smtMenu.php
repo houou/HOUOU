@@ -16,7 +16,12 @@
 
   <div class="menu-middle row">
     <div class="span11 offset1">
-      <?php include_component('default', 'smtLocalNav'); ?>
+      <a href="<?php echo url_for('@homepage', array('absolute' => 'true')); ?>" class="btn">ホーム</a>
+      <a href="<?php echo url_for('@member_profile_mine'); ?>" class="btn">プロフィール確認</a>
+      <a href="<?php echo url_for('@member_editProfile'); ?>" class="btn">プロフィール変更</a>
+      <a href="<?php echo url_for('@homepage', array('absolute' => 'true')); ?>community/1" class="btn">ALLコミュニティ</a>
+      <a href="<?php echo url_for('@member_config'); ?>" class="btn">設定変更</a>
+      <a href="<?php echo url_for('@member_logout'); ?>" class="btn">ログアウト</a>
     </div>
   </div>
   <hr class="toumei">
