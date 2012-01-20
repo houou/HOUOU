@@ -7,7 +7,7 @@
 </script>
 <script type="text/javascript">
 $(function(){
-  $.getJSON( '<?php echo app_url_for('api', 'member/search.json', array()) ?>?friend=1&targetid=<?php echo $member->getId(); ?>&apiKey=' + openpne.apiKey, function(json) {
+  $.getJSON( '<?php echo app_url_for('api', 'member/search.json', array()) ?>?target=friend&target_id=<?php echo $member->getId(); ?>&apiKey=' + openpne.apiKey, function(json) {
     $('#friendListTemplate').tmpl(json.data).appendTo('#memberFriendList');
     $('#memberFriendList').show();
     $('#memberFriendListLoading').hide();

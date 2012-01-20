@@ -7,7 +7,7 @@
 </script>
 <script type="text/javascript">
 $(function(){
-  $.getJSON( '<?php echo app_url_for('api', 'member/communities.json', array()); ?>?targetid=<?php echo $member->getId(); ?>&apiKey=' + openpne.apiKey, function(json) {
+  $.getJSON( '<?php echo app_url_for('api', 'member/communities.json', array()); ?>?member_id=<?php echo $member->getId(); ?>&apiKey=' + openpne.apiKey, function(json) {
     $('#joinCommunityListTemplate').tmpl(json.data).appendTo('#memberJoinCommunityList');
     $('#memberJoinCommunityList').show();
     $('#memberJoinCommunityListLoading').hide();
