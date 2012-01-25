@@ -20,6 +20,25 @@
 <div class="row">
 <?php foreach ($form as $field): ?>
 <?php if (!$field->isHidden()): ?>
+<?php if ("checkbox" === $field->getWidget()->getOption('type')): ?>
+  <hr class="toumei">
+  <div class="span9">
+  <?php echo $field->renderLabel(); ?>
+  </div>
+  <div class="span3">
+  <?php if ($field->hasError()): ?>
+  <div class="clearfix error"><span class="label important"><?php echo __($field->getError()); ?></span>
+  <?php endif; ?>
+  <?php echo $field->render(); ?>
+    <span class="help-block"><?php echo $field->renderHelp(); ?></span>
+  <?php if ($field->hasError()): ?>
+    </div>
+  <?php endif; ?>
+  </div>
+
+  <hr class="toumei">
+  <hr class="toumei">
+<?php else: ?>
   <div class="span12">
   <?php echo $field->renderLabel(); ?>
   </div>
@@ -44,6 +63,7 @@
     <span class="help-block"><?php echo $field->renderHelp(); ?></span>
   </div>
   <?php endif; ?>
+<?php endif; ?>
 <?php endif; ?>
 <?php endforeach; ?>
 </div>
