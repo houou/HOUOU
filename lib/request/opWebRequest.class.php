@@ -425,6 +425,6 @@ class opWebRequest extends sfWebRequest
       return false;
     }
 
-    return preg_match('/iPhone/', $userAgent) || preg_match('/Android/', $userAgent);
+    return preg_match('/iPhone/', $userAgent) || preg_match('/iPad/', $userAgent) || preg_match('/Android/', $userAgent);
   }
 }
