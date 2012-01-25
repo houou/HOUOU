@@ -5,7 +5,7 @@ $data = array();
 foreach ($notifications as $notification)
 {
   $data[] = array(
-    'body' => $notification['body']
+    'body' => $notification['body'],
     'category' => $notification['category'],
     'unread' => $notification['unread'],
     'created_at' => date('r', strtotime($notification['created_at'])),
@@ -18,4 +18,4 @@ foreach ($notifications as $notification)
 return array(
   'status' => 'success',
   'data' => $data
-)
+);
