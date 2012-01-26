@@ -1,67 +1,8 @@
-<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
-<script type="text/javascript" src="/js/smt_notify.js"></script>
-<script type="text/javascript">
-//-----------------------------------
-//COMMENT BUTTON NAVIGATION
-$(document).ready(function(){
-  $(".commentbutton").click(function(){
-    $(".commentform").toggle();
-    $(".commentbutton").toggle();
-  });
-});
-
-//-----------------------------------
-//TOSAKA BUTTON NAVIGATION
-$(document).ready(function(){
-  $(".postbutton").click(function(){
-    $(".toggle1:not(.postform)").hide();
-    $(".postform").toggle();
-    if($(".postform").is(":visible")){
-      $(".posttextarea").focus();
-    }
-  });
-
-  $(".ncbutton").click(function(){
-    $(".toggle1:not(.ncform)").hide();
-    $(".ncform").toggle();
-    $('#pushLoading').show();
-    $.getJSON('<?php echo app_url_for('api', 'push/search.json', array()) ?>?apiKey=' + openpne.apiKey, function(json){
-      if(json.status=='success')
-      {
-        $pushHtml = $("#pushListTemplate").tmpl(json.data);
-        $('.divlink', $pushHtml).pushLink();
-        $("#pushList").html($pushHtml);
-      }else{
-        alert(json.message);
-      }
-      $('#pushList').show();
-      $('#pushLoading').hide();
-    });
-  });
-
-  $(".menubutton").click(function(){
-    $(".toggle1:not(.menuform)").hide();
-    $(".menuform").toggle();
-  });
-
-  $(".toggle1_close").click(function(){
-    $(".toggle1").hide();
-  });
-
-  $.getJSON('<?php echo app_url_for('api', 'push/count.json', array()) ?>?apiKey=' + openpne.apiKey, function(json){
-    if(json.status=='success')
-    {
-      $pushHtml = $("#pushCountTemplate").tmpl(json.data);
-      $("#notification_center").append($pushHtml);
-    }else{
-      alert(json.message);
-    }
-  });
-
-});
-</script>
-
-
+<?php use_helper('Javascript'); ?>
+<?php use_javascript('jquery.tmpl.js'); ?>
+<?php use_javascript('smt_notify.js'); ?>
+<?php use_javascript('smt_util.js'); ?>
+<?php include_javascripts() ?>
 <!-- NCFORM TMPL -->
 <div class="ncform hide toggle1">
   <hr class="toumei">

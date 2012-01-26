@@ -17,7 +17,9 @@
 <?php
 echo javascript_tag('
 var openpne = {
-  apiKey: "'.$sf_user->getMemberApiKey().'"
+  apiKey: "'.$sf_user->getMemberApiKey().'",
+  pushListUrl: "'.app_url_for('api', 'push/search.json', array()).'",
+  pushCountUrl: "'.app_url_for('api', 'push/count.json', array()).'",
 };
 ');
 ?>
