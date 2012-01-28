@@ -61,7 +61,7 @@ class opNotificationCenter
 
     foreach ($notifications as &$notification)
     {
-      if ($id === $notification['id'])
+      if ($notificationId === $notification['id'])
       {
         $notification['unread'] = false;
         $success = true;
