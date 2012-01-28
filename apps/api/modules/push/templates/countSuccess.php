@@ -2,5 +2,5 @@
 
 return array(
   'status' => 'success',
-  'data' => $count,
+  'data' => $count->getRawValue(),
 );
