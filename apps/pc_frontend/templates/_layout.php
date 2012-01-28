@@ -10,10 +10,14 @@
 <?php endif; ?>
 <?php
 use_helper('Javascript');
+
+$json = array(
+  'apiKey' => $sf_user->getMemberApiKey(),
+  'apiBase' => app_url_for('api', 'homepage'),
+);
+
 echo javascript_tag('
-var openpne = {
-  apiKey: "'.$sf_user->getMemberApiKey().'"
-};
+var openpne = '.json_encode($json, defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : 0).';
 ');
 ?>
 <?php include_javascripts() ?>
