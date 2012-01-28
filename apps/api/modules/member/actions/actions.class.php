@@ -61,8 +61,8 @@ class memberActions extends opApiActions
     $memberId = $this->getUser()->getMemberId();
 
     $preRequest = Doctrine::getTable('MemberRelationship')->createQuery()
-      ->addWhere('member_id_from = ?', $memberId)
-      ->addWhere('member_id_to = ?', $targetMemberId)
+      ->addWhere('member_id_from = ?', $targetMemberId)
+      ->addWhere('member_id_to = ?', $memberId)
       ->addWhere('is_friend_pre = true')
       ->fetchOne();
 
