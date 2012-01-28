@@ -131,7 +131,7 @@ function op_api_date($date)
   return gmdate('r', strtotime($date));
 }
 
-function op_api_notification(array $notification)
+function op_api_notification($notification)
 {
   if ($notification['icon_url'])
   {
