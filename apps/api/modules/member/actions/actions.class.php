@@ -64,7 +64,7 @@ class memberActions extends opApiActions
       ->addWhere('member_id_from = ?', $memberId)
       ->addWhere('member_id_to = ?', $targetMemberId)
       ->addWhere('is_friend_pre = true')
-      ->findOne();
+      ->fetchOne();
 
     if (!$preRequest)
     {
