@@ -105,10 +105,10 @@ push_read:
 
 member_friend_accept:
   url: /member/friend_accept.json
-  param: { module: member, action: friend_accept, sf_format: json }
+  param: { module: member, action: friendAccept, sf_format: json }
   requirements: { sf_method: [get] }
 
 member_friend_reject:
   url: /member/friend_reject.json
-  param: { module: member, action: friend_accept, sf_format: json, reject: 1 }
+  param: { module: member, action: friendAccept, sf_format: json, reject: 1 }
   requirements: { sf_method: [get] }
