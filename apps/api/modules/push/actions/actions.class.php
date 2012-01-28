@@ -39,6 +39,24 @@ class pushActions extends opApiActions
     $this->setTemplate('count');
   }
 
+  public function executeRead(sfWebRequest $request)
+  {
+    $this->forward400Unless($request['id'], 'id parameter not specified.');
+
+    $member = $this->getUser()->getMember();
+
+    $ret = opNotificationCenter::setRead($member, $request['id']);
+
+    if ($ret)
+    {
+      return $this->renderJSON(array('status' => 'success'));
+    }
+    else
+    {
+      return $this->renderJSON(array('status' => 'error'));
+    }
+  }
+
   protected function getNotifications(Member $member = null)
   {
     if (!$member)

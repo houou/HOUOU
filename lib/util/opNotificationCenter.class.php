@@ -5,6 +5,7 @@ class opNotificationCenter
   static public function notify(Member $from, Member $to, $body, array $options = null)
   {
     $notificationItem = array(
+      'id' => microtime(),
       'body' => $body,
       'member_id_from' => $from->getId(),
       'created_at' => time(),
@@ -40,5 +41,34 @@ class opNotificationCenter
     $notificationObject->setValue(serialize($notifications));
     $notificationObject->save();
     $notificationObject->free(true);
+  }
+
+  public function setRead(Member $target, $notificationId)
+  {
+    $notificationObject = Doctrine::getTable('MemberConfig')
+      ->findOneByMemberIdAndName($target->getId(), 'notification_center');
+
+    if (!$notificationObject)
+    {
+      return false;
+    }
+    else
+    {
+      $notifications = unserialize($notificationObject->getValue());
+    }
+
+    foreach ($notifications as $key => $notification)
+    {
+      if ($id === $notification['id'])
+      {
+        unset($notifications[$key]);
+      }
+    }
+
+    $notificationObject->setValue(serialize($notifications));
+    $notificationObject->save();
+    $notificationObject->free(true);
+
+    return true;
   }
 }
