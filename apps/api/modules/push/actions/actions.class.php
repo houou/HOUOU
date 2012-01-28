@@ -19,7 +19,7 @@ class pushActions extends opApiActions
       'other'   => 0,
     );
 
-    foreach ($this->notifications as $notification)
+    foreach ($notifications as $notification)
     {
       if (array_key_exists($notification['category'], $this->count))
       {
@@ -48,7 +48,7 @@ class pushActions extends opApiActions
 
     $notifications = $member->getConfig('notification_center');
 
-    if ($notifications)
+    if (!$notifications)
     {
       $notifications = array();
     }
