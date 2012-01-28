@@ -42,4 +42,46 @@ class memberActions extends opApiActions
 
     $this->setTemplate('array');
   }
+
+  public function executeFriendAccept(sfWebRequest $request)
+  {
+    if (isset($request['member_id']))
+    {
+      $targetMemberId = $request['member_id'];
+    }
+    elseif (isset($request['id']))
+    {
+      $targetMemberId = $request['id'];
+    }
+    else
+    {
+      $this->forward400('member_id parameter not specified.');
+    }
+
+    $memberId = $this->getUser()->getMemberId();
+
+    $preRequest = Doctrine::getTable('MemberRelationship')->createQuery()
+      ->addWhere('member_id_from = ?', $memberId)
+      ->addWhere('member_id_to = ?', $targetMemberId)
+      ->addWhere('is_friend_pre = true')
+      ->findOne();
+
+    if (!$preRequest)
+    {
+      $this->forward404('Invalid member_id.');
+    }
+
+    if (!$request['reject'])
+    {
+      $preRequest->setFriend();
+    }
+    else
+    {
+      $preRequest->removeFriendPre();
+    }
+
+    $preRequest->free(true);
+
+    return $this->renderJSON(array('status' => 'success'));
+  }
 }
