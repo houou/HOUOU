@@ -57,18 +57,22 @@ class opNotificationCenter
       $notifications = unserialize($notificationObject->getValue());
     }
 
-    foreach ($notifications as $key => $notification)
+    $success = false;
+
+    foreach ($notifications as &$notification)
     {
       if ($id === $notification['id'])
       {
-        unset($notifications[$key]);
+        $notification['unread'] = false;
+        $success = true;
       }
     }
+    unset($notification);
 
     $notificationObject->setValue(serialize($notifications));
     $notificationObject->save();
     $notificationObject->free(true);
 
-    return true;
+    return $success;
   }
 }
