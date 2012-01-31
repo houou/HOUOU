@@ -13,6 +13,10 @@
   background: #ddd;
 }
 
+.isread {
+  background: #FFF;
+}
+
 .hover {
   border-color: #aaf;
   cursor: pointer;
