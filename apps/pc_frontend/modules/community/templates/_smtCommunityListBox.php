@@ -7,7 +7,6 @@
     <?php echo op_image_tag_sf_image($community->getImageFileName(), array('size' => '320x320', 'format' => 'jpg')) ?>
     <hr class="toumei" />
     <?php if ($isAdmin) : ?>
-    <?php echo link_to(__('Edit Photo'), 'community/configImage?id='.$community->getId()) ?>
     <?php endif; ?>
   </div>
 </div>
@@ -57,7 +56,6 @@ foreach ($communitySubAdmins as $m)
   <td></td>
   <td>
   <?php if ($isEditCommunity) : ?>
-  <?php echo link_to(__('Edit this %community%', array('%community%' => $op_term['community']->titleize())), '@community_edit?id=' . $community->getId()) ?><br>
   <?php endif; ?>
   <?php if (!$isAdmin) : ?>
   <?php if ($isCommunityMember) : ?>
