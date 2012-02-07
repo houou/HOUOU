@@ -29,7 +29,7 @@ class friendActions extends opFriendAction
 
   public function executeList(opWebRequest $request)
   {
-    $this->forwardIf($request->isSmartPhone(), 'friend', 'smtList');
+    $this->forwardIf($request->isSmartphone(), 'friend', 'smtList');
 
     $this->size = 50;
 

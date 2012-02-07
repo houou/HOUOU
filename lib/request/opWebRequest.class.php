@@ -416,7 +416,7 @@ class opWebRequest extends sfWebRequest
     sfContext::getInstance()->getController()->redirect($url);
   }
 
-  public function isSmartPhone()
+  public function isSmartphone()
   {
     $userAgent = $this->getHttpHeader('User-Agent');
 

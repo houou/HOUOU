@@ -24,7 +24,7 @@ class communityActions extends opCommunityAction
   */
   public function executeHome(opWebRequest $request)
   {
-    $this->forwardIf($request->isSmartPhone(), 'community', 'smtHome');
+    $this->forwardIf($request->isSmartphone(), 'community', 'smtHome');
 
     return parent::executeHome($request);
   }
@@ -52,7 +52,7 @@ class communityActions extends opCommunityAction
   */
   public function executeEdit(opWebRequest $request)
   {
-    $this->forwardIf($request->isSmartPhone(), 'community', 'smtEdit');
+    $this->forwardIf($request->isSmartphone(), 'community', 'smtEdit');
 
     $this->enableImage = true;
     $result = parent::executeEdit($request);
@@ -93,7 +93,7 @@ class communityActions extends opCommunityAction
   */
   public function executeMemberList(opWebRequest $request)
   {
-    $this->forwardIf($request->isSmartPhone(), 'community', 'smtMemberList');
+    $this->forwardIf($request->isSmartphone(), 'community', 'smtMemberList');
 
     return parent::executeMemberList($request);
   }

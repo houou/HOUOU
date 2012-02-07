@@ -24,7 +24,7 @@ class memberActions extends opMemberAction
   */
   public function executeHome(opWebRequest $request)
   {
-    $this->forwardIf($request->isSmartPhone(), 'member', 'smtHome');
+    $this->forwardIf($request->isSmartphone(), 'member', 'smtHome');
 
     $this->topGadgets = null;
     $this->sideMenuGadgets = null;
@@ -76,7 +76,7 @@ class memberActions extends opMemberAction
       $this->redirect(opConfig::get('external_pc_login_url'));
     }
 
-    if ($request->isSmartPhone())
+    if ($request->isSmartphone())
     {
       $gadgets = Doctrine::getTable('Gadget')->retrieveGadgetsByTypesName('smartphoneLogin');
       $this->contentsGadgets = $gadgets['smartphoneLoginContents'];
@@ -114,7 +114,7 @@ class memberActions extends opMemberAction
   */
   public function executeProfile(opWebRequest $request)
   {
-    $this->forwardIf($request->isSmartPhone(), 'member', 'smtProfile');
+    $this->forwardIf($request->isSmartphone(), 'member', 'smtProfile');
 
     $id = $request->getParameter('id', $this->getUser()->getMemberId());
     if ($id != $this->getUser()->getMemberId())
@@ -165,7 +165,7 @@ class memberActions extends opMemberAction
   */
   public function executeConfigImage(opWebRequest $request)
   {
-    $this->forwardIf($request->isSmartPhone(), 'member', 'smtConfigImage');
+    $this->forwardIf($request->isSmartphone(), 'member', 'smtConfigImage');
 
     $options = array('member' => $this->getUser()->getMember());
     $this->form = new MemberImageForm(array(), $options);
@@ -284,7 +284,7 @@ class memberActions extends opMemberAction
   */
   public function executeConfig(opWebRequest $request)
   {
-    $this->forwardIf($request->isSmartPhone(), 'member', 'smtConfig');
+    $this->forwardIf($request->isSmartphone(), 'member', 'smtConfig');
 
     return parent::executeConfig($request);
   }
@@ -307,7 +307,7 @@ class memberActions extends opMemberAction
   */
   public function executeInvite(opWebRequest $request)
   {
-    $this->forwardIf($request->isSmartPhone(), 'member', 'smtInvite');
+    $this->forwardIf($request->isSmartphone(), 'member', 'smtInvite');
 
     return parent::executeInvite($request);
   }
@@ -342,7 +342,7 @@ class memberActions extends opMemberAction
   */
   public function executeEditProfile(opWebRequest $request)
   {
-    $this->forwardIf($request->isSmartPhone(), 'member', 'smtEditProfile');
+    $this->forwardIf($request->isSmartphone(), 'member', 'smtEditProfile');
 
     return parent::executeEditProfile($request);
   }
