@@ -10,13 +10,65 @@
       <?php echo op_image_tag('UPARROW', array('class' => 'toggle1_close')) ?>
     </div>
   </div>
-  <div class="row">
+  <div id="pushList" class="hide">
   </div>
-  <hr class="toumei">
-  <hr class="toumei">
-  <?php echo op_image_tag('SEPALATOR.png', array('height' => '6', 'width' => '320')) ?>
+  <div id="pushLoading" class="center"><?php echo op_image_tag('ajax-loader.gif', array()) ?></div>
 </div>
 <!-- NCFORM TMPL -->
+
+<script id="pushListTemplate" type="text/x-jquery-tmpl">
+    <div class="{{if unread==false}}isread {{/if}}row push" data-location-url="${url}" data-member-id="${member_id_from}">
+      <div class="{{if category=="message" || category=="other"}}divlink {{/if}}row" data-location-url="${url}" data-member-id="${member_id_from}" data-notify-url="<?php echo app_url_for('api', 'push/read.json', array()); ?>" data-notify-id="${id}">
+      <hr class="toumei">
+      <div class="span3">
+        <img style="margin-left: 5px;" src="${icon_url}" class="rad4" width="48" height="48">
+      </div>
+      <div class="span9" style="margin-left: -13px;">
+      {{if category=="link"}}
+        {{if unread==true}}
+        <div class="row">
+        {{html body}}
+        </div>
+        <div class="row">
+            <button class="span2 btn primary small friend-notify-button friend-accept" data-post-url="<?php echo app_url_for('api', 'member/friend_accept.json', array()); ?>" data-member-id="${member_id_from}" data-notify-id="${id}" data-notify-url="<?php echo app_url_for('api', 'push/read.json', array()); ?>">YES</button>
+            <button class="span2 btn small friend-notify-button friend-reject" data-post-url="<?php echo app_url_for('api', 'member/friend_reject.json', array()); ?>" data-member-id="${member_id_from}" data-notify-id="${id}" data-notify-url="<?php echo app_url_for('api', 'push/read.json', array()); ?>">NO</button>
+            <div class="center hide" id="ncfriendloading"><?php echo op_image_tag('ajax-loader.gif', array()) ?></div>
+            <div class="center hide" id="ncfriendresultmessage"></div>
+        </div>
+        {{else}}
+        <div class="row">
+        フレンドリンクが来ました。
+        </div>
+        {{/if}}
+      {{/if}}
+      {{if category=="message"}}
+        <div class="link_message">
+        {{html body}}
+        </div>
+      {{/if}}
+      {{if category=="other"}}
+        <div class="link_other">
+        {{html body}}
+        </div>
+      {{/if}}
+      </div>
+      <hr class="toumei">
+    </div>
+    </div>
+    <hr class="gray">
+</script>
+<script id="pushCountTemplate" type="text/x-jquery-tmpl">
+  {{if message!==0}}
+  <span class="nc_icon1 label important" id="nc_count1">${message}</span>
+  {{/if}}
+  {{if link!==0}}
+  <span class="nc_icon2 label important" id="nc_count2">${link}</span>
+  {{/if}}
+  {{if other!==0}}
+  <span class="nc_icon3 label important" id="nc_count3">${other}</span>
+  {{/if}}
+</script>
+
 
 <?php include_component('default', 'smtMenu') ?>
 
@@ -33,11 +85,13 @@
     </div>
   </div>
   <div class="row">
-    <textarea class="posttextarea span12" rows="4" ></textarea>
+    <textarea class="posttextarea span12" rows="4" id="gorgon-textarea-body"></textarea>
   </div>
   <hr class="toumei">
   <div class="row">
-    <button class="span10 offset1 btn small primary" >POST</button>
+    <?php $form = new sfForm(); ?>
+    <?php $csrfToken = $form->getCSRFToken(); ?>
+    <button class="span10 offset1 btn small primary" id="gorgon-submit" data-post-csrftoken="<?php echo $csrfToken; ?>" data-post-baseurl="<?php echo url_for('@homepage', array('absolute' => true)); ?>">POST</button>
   </div>
   <hr class="toumei">
   <hr class="toumei">
@@ -61,7 +115,8 @@
     <div class="span12">
       <div class="row">
         <div class="span4"><?php echo op_image_tag('LOGO.png', array('height' => '32', 'class' => 'menubutton')); ?></div>
-        <div class="span4 center"><?php echo op_image_tag('NOTIFY_CENTER.png', array('height' => '32', 'class' => 'ncbutton')) ?></div>
+        <div id="notification_center" class="span4 center"><?php echo op_image_tag('NOTIFY_CENTER.png', array('height' => '32', 'class' => 'ncbutton')) ?>
+        </div>
         <div class="span3 offset1 center"><?php echo op_image_tag('POST.png', array('height' => '32', 'class' =>'postbutton')) ?></div>
       </div>
     </div>

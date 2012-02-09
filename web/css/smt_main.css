@@ -17,6 +17,42 @@
   color:#fff;
 }
 
+#pushList {
+  background: #ddd;
+}
+
+.isread {
+  background: #FFF;
+}
+
+.hover {
+  border-color: #aaf;
+  cursor: pointer;
+  background-color: #cdf;
+}
+
+#notification_center {
+  position: relative;
+}
+.nc_icon1 {
+  position:absolute;
+  top: 18px;
+  left: 24px;
+  line-height: 10px;
+}
+.nc_icon2 {
+  position:absolute;
+  top: 18px;
+  left: 58px;
+  line-height: 10px;
+}
+.nc_icon3 {
+  position:absolute;
+  top: 18px;
+  left: 90px;
+  line-height: 10px;
+}
+
 .postface {
   height: 52px;
   background: #eee;
@@ -62,6 +98,11 @@ body {
   width: 320px;
 }
 
+hr.gray {
+  margin: 0;
+  height: 0;
+  border-color: #999;
+}
 hr.toumei {
   margin: 0;
   height: 4px;
