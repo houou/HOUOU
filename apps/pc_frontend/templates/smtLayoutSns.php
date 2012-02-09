@@ -19,6 +19,7 @@
 echo javascript_tag('
 var openpne = {
   apiKey: "'.$sf_user->getMemberApiKey().'",
+  apiBase: "'.app_url_for('api', 'homepage').'",
   pushListUrl: "'.app_url_for('api', 'push/search.json', array()).'",
   pushCountUrl: "'.app_url_for('api', 'push/count.json', array()).'",
 };
