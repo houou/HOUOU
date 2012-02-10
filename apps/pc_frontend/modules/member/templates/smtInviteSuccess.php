@@ -23,11 +23,13 @@
 <div class="span12" style="text-align: left;">
 <?php echo $f->renderLabel(); ?>
 </div>
-<?php if ($f->hasError()): ?>
-<div class="span12"><div class="clearfix error"><span class="label important"><?php echo __($f->getError()); ?></span><br /><?php echo $f->render(array('class' => 'span12 error')) ?><br /><span class="help-block"><?php echo $f->renderHelp(); ?></span></div></div>
-<?php else: ?>
-<div class="span12"><?php echo $f->render(array('class' => 'span12')) ?><span class="help-block"><?php echo $f->renderHelp(); ?></span></div>
-<?php endif; ?>
+<div class="span12 <?php echo $f->hasError() ? 'clearfix error' : '' ?>">
+  <?php if ($f->hasError()): ?>
+  <span class="label important"><?php echo __($f->getError()) ?></span><br>
+  <?php endif ?>
+  <?php echo $f->render(array('class' => 'span12')) ?>
+  <span class="help-block"><?php echo $f->renderHelp() ?></span>
+</div>
 <?php endif; ?>
 <?php endforeach; ?>
 <?php echo $form->renderHiddenFields(); ?>

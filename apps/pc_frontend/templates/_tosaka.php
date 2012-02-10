@@ -12,48 +12,34 @@
   </div>
   <div id="pushList" class="hide">
   </div>
-  <div id="pushLoading" class="center"><?php echo op_image_tag('ajax-loader.gif', array()) ?></div>
+  <div id="pushLoading" class="center"><?php echo op_image_tag('ajax-loader.gif') ?></div>
 </div>
 <!-- NCFORM TMPL -->
 
 <script id="pushListTemplate" type="text/x-jquery-tmpl">
-    <div class="{{if unread==false}}isread {{/if}}row push" data-location-url="${url}" data-member-id="${member_id_from}">
-      <div class="{{if category=="message" || category=="other"}}divlink {{/if}}row" data-location-url="${url}" data-member-id="${member_id_from}" data-notify-url="<?php echo app_url_for('api', 'push/read.json', array()); ?>" data-notify-id="${id}">
+    <div class="{{if unread==false}}isread {{/if}}{{if category=="message" || category=="other"}}divlink {{/if}}row push"  data-notify-id="${id}" data-location-url="${url}" data-member-id="${member_id_from}">
       <hr class="toumei">
       <div class="span3">
         <img style="margin-left: 5px;" src="${icon_url}" class="rad4" width="48" height="48">
       </div>
       <div class="span9" style="margin-left: -13px;">
-      {{if category=="link"}}
-        {{if unread==true}}
         <div class="row">
-        {{html body}}
+          {{if category=="link" && unread==false}}
+          フレンドリンクが来ました。
+          {{else}}
+          {{html body}}
+          {{/if}}
         </div>
+        {{if category=="link"}}
         <div class="row">
-            <button class="span2 btn primary small friend-notify-button friend-accept" data-post-url="<?php echo app_url_for('api', 'member/friend_accept.json', array()); ?>" data-member-id="${member_id_from}" data-notify-id="${id}" data-notify-url="<?php echo app_url_for('api', 'push/read.json', array()); ?>">YES</button>
-            <button class="span2 btn small friend-notify-button friend-reject" data-post-url="<?php echo app_url_for('api', 'member/friend_reject.json', array()); ?>" data-member-id="${member_id_from}" data-notify-id="${id}" data-notify-url="<?php echo app_url_for('api', 'push/read.json', array()); ?>">NO</button>
-            <div class="center hide" id="ncfriendloading"><?php echo op_image_tag('ajax-loader.gif', array()) ?></div>
+            <button class="span2 btn primary small friend-notify-button friend-accept">YES</button>
+            <button class="span2 btn small friend-notify-button friend-reject">NO</button>
+            <div class="center hide" id="ncfriendloading"><?php echo op_image_tag('ajax-loader.gif') ?></div>
             <div class="center hide" id="ncfriendresultmessage"></div>
         </div>
-        {{else}}
-        <div class="row">
-        フレンドリンクが来ました。
-        </div>
         {{/if}}
-      {{/if}}
-      {{if category=="message"}}
-        <div class="link_message">
-        {{html body}}
-        </div>
-      {{/if}}
-      {{if category=="other"}}
-        <div class="link_other">
-        {{html body}}
-        </div>
-      {{/if}}
       </div>
       <hr class="toumei">
-    </div>
     </div>
     <hr class="gray">
 </script>

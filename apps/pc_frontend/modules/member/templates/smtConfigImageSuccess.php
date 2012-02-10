@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="gadget_header span12"> <?php echo __('Edit Photo'); ?> </div>
+  <div class="gadget_header span12"><?php echo __('Edit Photo'); ?></div>
 </div>
 
 <?php $errors = array(); ?>
@@ -21,7 +21,7 @@
 <?php echo $form->renderFormTag(url_for('member/configImage')) ?>
 <?php echo $form['file'] ?>
 <?php echo $form->renderHiddenFields(); ?>
-<input type="submit" name="submit" value="アップロードする" class="btn primary" />
+<input type="submit" name="submit" value="<?php echo __('Upload') ?>" class="btn primary" />
 </form>
 <?php if (3 >= $sf_user->getMember()->getMemberImage()->count()): ?>
 <?php echo __('Send E-mail that has a photo to use as your image.') ?><br>
@@ -50,7 +50,7 @@
 <?php endif; ?>
 ]
 <?php else: ?>
-<img alt="" width="80" height="80" src="<?php echo url_for('@homepage'); ?>images/no_image.gif" />
+<?php echo op_image_tag('no_image.gif', array('size' => '80x80', 'alt' => '')) ?>
 <?php endif; ?>
   </div>
 </div>

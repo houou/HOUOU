@@ -37,22 +37,14 @@ foreach ($categories as $key => $value)
 <div class="row span12" style="margin-left: 5px;">
 <?php foreach ($form as $f): ?>
 <?php if (!$f->isHidden()): ?>
-<?php if ($f->hasError()): ?>
-<div class="clearfix error">
-<?php else: ?>
-<div class="clearfix">
-<?php endif; ?>
-<label for="xlInput3" class="span12"><?php echo $f->renderLabel(); ?></label>
-<?php if ($f->hasError()): ?>
-<?php echo $f->render(array('class' => 'span12 error')); ?>
-<?php else: ?>
-<?php echo $f->render(array('class' => 'span12')); ?>
-<?php endif; ?>
-<span class="help-block"><?php echo $f->renderHelp(); ?></span>
+<div class="clearfix <?php $f->hasError() ? 'error' : '' ?>">
+<label for="xlInput3" class="span12"><?php echo $f->renderLabel() ?></label>
+<?php echo $f->render(array('class' => 'span12')) ?>
+<span class="help-block"><?php echo $f->renderHelp() ?></span>
 </div>
 <?php endif; ?>
 <?php endforeach; ?>
-<input type="submit" name="submit" value="変更する" class="btn danger" />
+<input type="submit" name="submit" value="<?php echo __('Send') ?>" class="btn danger" />
 <?php echo $form->renderHiddenFields(); ?>
 </form>
 </div>
