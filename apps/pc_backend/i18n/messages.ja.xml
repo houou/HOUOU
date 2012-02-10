@@ -1178,6 +1178,10 @@
         <target>ログアウト</target>
       </trans-unit>
       <trans-unit id="">
+        <source>Advanced Settings</source>
+        <target>上級者向け設定</target>
+      </trans-unit>
+      <trans-unit id="">
         <source>%sns% Administration</source>
         <target>%sns%管理画面</target>
       </trans-unit>
