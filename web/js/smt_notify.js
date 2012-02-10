@@ -14,7 +14,6 @@
 		return this.each(function(){
 			var linkUrl = $(this).attr('data-location-url');
 			var notifyId = $(this).attr('data-notify-id');
-			var notifyUrl = $(this).attr('data-notify-url');
 			$(this).mouseover(function(){
 				$(this).addClass('hover');
 			})
@@ -22,7 +21,7 @@
 				$(this).removeClass('hover');
 			})
 			$(this).click(function(){
-				$.getJSON( notifyUrl , { 'id': notifyId, 'apiKey': openpne.apiKey }, function(d){});
+				$.getJSON( openpne.apiBase + 'push/read.json' , { 'id': notifyId, 'apiKey': openpne.apiKey }, function(d){});
 				window.location = linkUrl;
 			});
 		});
@@ -33,13 +32,12 @@
 			$(this).click(function(){
 				$(settings.buttonElement).hide();
 				$(settings.ncfriendloadingElement).show();
-				var sendUrl = $(this).attr('data-post-url');
-				var memberId = $(this).attr('data-member-id');
-				var notifyId = $(this).attr('data-notify-id');
-				var notifyUrl = $(this).attr('data-notify-url');
-				$.getJSON( notifyUrl , { 'id': notifyId, 'apiKey': openpne.apiKey }, function(d){});
+        var pushElement = $(this).parents('.push');
+				var memberId = pushElement.attr('data-member-id');
+				var notifyId = pushElement.attr('data-notify-id');
+				$.getJSON( openpne.apiBase + 'push/read.json' , { 'id': notifyId, 'apiKey': openpne.apiKey }, function(d){});
 				$.ajax({
-					url: sendUrl,
+					url: openpne.apiBase + 'member/friend_accept.json',
 					type: 'GET',
 					data: 'member_id=' + memberId + '&apiKey=' + openpne.apiKey,
 					dataType: 'json',
@@ -62,13 +60,12 @@
 			$(this).click(function(){
 				$(settings.buttonElement).hide();
 				$(settings.ncfriendloadingElement).show();
-				var sendUrl = $(this).attr('data-post-url');
-				var memberId = $(this).attr('data-member-id');
-				var notifyId = $(this).attr('data-notify-id');
-				var notifyUrl = $(this).attr('data-notify-url');
-				$.getJSON( notifyUrl , { 'id': notifyId, 'apiKey': openpne.apiKey }, function(d){});
+        var pushElement = $(this).parents('.push');
+				var memberId = pushElement.attr('data-member-id');
+				var notifyId = pushElement.attr('data-notify-id');
+				$.getJSON( openpne.apiBase + 'push/read.json' , { 'id': notifyId, 'apiKey': openpne.apiKey }, function(d){});
 				$.ajax({
-					url: sendUrl,
+					url: openpne.apiBase + 'member/friend_reject.json',
 					type: 'GET',
 					data: 'member_id=' + memberId + '&apiKey=' + openpne.apiKey,
 					dataType: 'json',
