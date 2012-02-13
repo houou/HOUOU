@@ -42,15 +42,22 @@ $conn->rollback(); //TEARDOWN
 
 $conn->beginTransaction(); $ua = new opBrowser(); //SETUP
 
-$action = "/activity/post.json";
-$t->comment($action);
+$t->comment("/activity/post.json");
 $params = array("apiKey"=>$M1_API_KEY,
                 "body" => "久方のひかりのどけき春の日にしづ心なく花のちるらむ");
-$ua->get($action,$params);
+$ua->get("/activity/post.json",$params);
 $content = json_decode($ua->getResponse()->getContent(),true);
 
 $t->is($ua->getResponse()->getStatusCode(),200,"投稿成功200");
 $t->is($content['data']['body'],"久方のひかりのどけき春の日にしづ心なく花のちるらむ","res bodyは入力と同じ");
+
+
+$params = array("apiKey"=>$M1_API_KEY,
+                "body" => "久方のひかりのどけき春の日にしづ心なく花のちるらむ");
+$ua->get("/activity/post.json",$params);
+$content = json_decode($ua->getResponse()->getContent(),true);
+$t->isnt($ua->getResponse()->getStatusCode(),200,"アクティビティの連投はブロックされるべし");
+
 
 
 $conn->rollback(); //TEARDOWN
