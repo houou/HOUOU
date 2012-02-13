@@ -57,5 +57,10 @@ $conn->rollback(); //TEARDOWN
 
 $t->todo("openpne apiKey がHTMLに仕込まれているか？");
 
-
-
+$result = $t->to_array();
+if(sizeof($result[0]["stats"]["failed"]) !=0)
+{
+  exit(1);
+}else{
+  exit(0);
+}
