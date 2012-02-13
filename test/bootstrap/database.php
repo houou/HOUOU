@@ -1,7 +1,11 @@
 <?php
 
-$_app = 'pc_frontend';
 $_env = 'test';
+
+if (!isset($_app))
+{
+  $_app = 'pc_frontend';
+}
 
 if (!isset($fixture))
 {
