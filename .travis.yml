@@ -1,0 +1,19 @@
+language: php
+
+php:
+#  - 5.2
+  - 5.3
+
+env:
+  - DB=mysql
+#  - DB=sqlite
+
+before_script:
+  - sh -c "php -i"
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS openpne;' -uroot; fi"
+  - sh -c "cp config/ProjectConfiguration.class.php.sample config/ProjectConfiguration.class.php"
+  - sh -c "cp config/OpenPNE.yml.sample config/OpenPNE.yml"
+  - sh -c "if [ '$DB' = 'mysql' ]; then ./symfony openpne:fast-install --dbms=mysql --dbuser=root --dbpassword= --dbname=openpne; fi"
+  - sh -c "if [ '$DB' = 'sqlite' ]; then ./symfony openpne:fast-install --dbms=sqlite --dbname=log/op3.sqlite ; fi"
+
+script:  ./symfony test:unit opSmartphoneAPI 
