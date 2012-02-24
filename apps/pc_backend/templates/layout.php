@@ -26,6 +26,8 @@
 <li><?php echo link_to(__('Top page'), '@homepage') ?></li>
 <?php include_component('default', 'sideMenu') ?>
 <li><?php echo link_to(__('Logout'), 'default/logout') ?></li>
+<br />
+<li><?php echo link_to(__('Advanced Settings'), 'advanced/index') ?></li>
 </ul>
 </div>
 <?php endif; ?>

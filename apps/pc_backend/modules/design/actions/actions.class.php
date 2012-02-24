@@ -24,7 +24,7 @@ class designActions extends sfActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $this->forward('design', 'layout');
+    $this->forward('design', 'gadget');
   }
 
  /**

@@ -21,13 +21,6 @@ languageSelecterBox:
   viewable_privilege: 4
   component: [default, languageSelecterBox]
 
-sideBanner:
-  caption:
-    ja_JP: "サイドバナー"
-  description:
-    ja_JP: "バナー設定のサイドバナーを設置できます。"
-  component: [default, sideBanner]
-
 rssBox:
   caption:
     ja_JP: "RSS リーダー"
